@@ -10,12 +10,13 @@
     <h2>Seja muito bem-vindo a GOrretora</h2>
 
     <script>
-        let socket = new WebSocket("ws://127.0.0.1:8080/ws?ticks=AALR3");
+        let socket = new WebSocket("ws://127.0.0.1:8080/ws?ticks=GOGL34&ticks=AAPL34&ticks=HAPV3&ticks=HBOR3&ticks=HBTS5&ticks=HETA4&ticks=HGTX3&ticks=HOME34&ticks=HPQB34&ticks=HYPE3&ticks=IBMB34&ticks=IDNT3&ticks=IDVL3&ticks=IDVL4&ticks=IGTA3&ticks=IRBR3&ticks=ITLC34&ticks=ITSA3&ticks=ITSA4&ticks=ITUB3&ticks=ITUB4&ticks=JBDU3&ticks=JBDU4&ticks=JBSS3&ticks=JFEN3&ticks=JHSF3&ticks=JNJB34&ticks=JPSA3&ticks=JSLG3&ticks=KEPL3&ticks=KHCB34&ticks=KLBN3&ticks=KLBN4&ticks=KLBN11&ticks=KROT3&ticks=LAME3&ticks=LAME4&ticks=LCAM3&ticks=LEVE3&ticks=LIGT3&ticks=LILY34&ticks=LINX3&ticks=LIQO3&ticks=LLIS3&ticks=LMTB34&ticks=LOGG3&ticks=LOGN3&ticks=LPSB3&ticks=LREN3&ticks=MACY34");
         console.log("Attempting Connection...");
         console.log(socket)
 
         socket.onopen = () => {
             console.log("Successfully Connected");
+            socket.send("Hi From the Client!")
         };
 
         socket.onmessage = (msg) => {
@@ -24,6 +25,7 @@
         
         socket.onclose = event => {
             console.log("Socket Closed Connection: ", event);
+            socket.send("Client Closed!")
         };
 
         socket.onerror = error => {

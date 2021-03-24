@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Gorretora</title>
+  </head>
+  <body>
+    <h2>Seja muito bem-vindo a GOrretora</h2>
+
+    <script>
+        let socket = new WebSocket("ws://127.0.0.1:8080/ws?ticks=GOGL34&ticks=AAPL34&ticks=HAPV3&ticks=HBOR3&ticks=HBTS5&ticks=HETA4&ticks=HGTX3&ticks=HOME34&ticks=HPQB34&ticks=HYPE3");
+        console.log("Attempting Connection...");
+        console.log(socket)
+
+        socket.onopen = () => {
+            console.log("Successfully Connected");
+            socket.send("Hi From the Client!")
+        };
+
+        socket.onmessage = (msg) => {
+          console.log(msg.data)
+        }
+        
+        socket.onclose = event => {
+            console.log("Socket Closed Connection: ", event);
+            socket.send("Client Closed!")
+        };
+
+        socket.onerror = error => {
+            console.log("Socket Error: ", error);
+        };
+
+    </script>
+  </body>
+</html>
