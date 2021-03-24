@@ -125,7 +125,7 @@ var upgrader = websocket.Upgrader{
 func main() {
 	fullyTicksMap()
 	fmt.Println("Hello World")
-	flagHost := flag.String("host", "18.228.170.236:9092", "string")
+	flagHost := flag.String("host", "18.228.170.236:29092", "string")
 	flagTopic := flag.String("topic", "b3-simulate", "string")
 	flagGroup := flag.String("group", "b3-simulate-c1", "string")
 	flag.Parse()
