@@ -98,7 +98,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request, ch chan string, done cha
 					if t_value_user != ticks_map[t_name_user] {
 						users[u].ticks[pos].value = ticks_map[t_name_user]
 
-						err = users[u].Conn.WriteMessage(1, []byte(fmt.Sprintf("%s - %s - %d", t_name_user, ticks_map[t_name_user], (time.Now().UnixNano()/int64(time.Millisecond)))))
+						err = users[u].Conn.WriteMessage(1, []byte(fmt.Sprintf("%s - %s - %d", t_name_user, ticks_map[t_name_user], (time.Now().UnixNano()/int64(time.Millisecond)-10800000))))
 						if err != nil {
 							fmt.Println(err)
 						}
