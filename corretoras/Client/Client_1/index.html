@@ -1,37 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Gorretora</title>
-  </head>
-  <body>
-    <h2>Seja muito bem-vindo a GOrretora</h2>
 
-    <script>
-        let socket = new WebSocket("ws://15.228.28.246:8080/ws?ticks=GOGL34");
-        console.log("Attempting Connection...");
-        console.log(socket)
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Gorretora</title>
+</head>
 
-        socket.onopen = () => {
-            console.log("Successfully Connected");
-            socket.send("Hi From the Client!")
-        };
+<body>
+  <h2>Seja muito bem-vindo a GOrretora</h2>
 
-        socket.onmessage = (msg) => {
-          console.log(msg.data)
-        }
-        
-        socket.onclose = event => {
-            console.log("Socket Closed Connection: ", event);
-            socket.send("Client Closed!")
-        };
+  <script>
 
-        socket.onerror = error => {
-            console.log("Socket Error: ", error);
-        };
+    var time_id = Date.now()
+    var array_lat_vrau = []
 
-    </script>
-  </body>
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function writeFile() {
+      let a = document.createElement('a');
+      txt = 'id;latencia;tick\n'
+      array_lat_vrau.forEach(function (evt) {
+        txt = txt + evt.id + ';' + evt.lat + + ';' + evt.tick + '\n'
+      })
+      a.href = "data:application/octet-stream," + encodeURIComponent(txt);
+      let myuuid = uuidv4();
+
+      a.download = myuuid + '.txt';
+      a.click();
+    }
+
+    let socket = new WebSocket("ws://15.228.28.246:8080/ws?ticks=GOGL34");
+    console.log("Attempting Connection...");
+    console.log(socket)
+
+    socket.onopen = () => {
+      console.log("Successfully Connected");
+      socket.send("Hi From the Client!")
+      time_id = Date.now()
+    };
+
+    socket.onmessage = (msg) => {
+      re = RegExp('- ([0-9]+) -')
+      re_2 = RegExp('^([A-Z0-9]+) -')
+      ts = Date.now()
+      _id = Math.round((ts - time_id) / 5000)
+      timestamp = Number(((msg.data).toString()).match(re)[1])
+      array_lat_vrau.push({ "id": _id, "lat": (Date.now() - 10800000) - timestamp, "tick": ((msg.data).toString()).match(re_2)[1] })
+      console.log(msg.data)
+    }
+
+    socket.onclose = event => {
+      console.log("Socket Closed Connection: ", event);
+      socket.send("Client Closed!")
+      writeFile()
+
+    };
+
+    socket.onerror = error => {
+      console.log("Socket Error: ", error);
+    };
+
+  </script>
+</body>
+
 </html>
