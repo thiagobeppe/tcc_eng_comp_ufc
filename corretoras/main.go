@@ -100,7 +100,8 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request, ch chan string, done cha
 
 						err = users[u].Conn.WriteMessage(1, []byte(fmt.Sprintf("%s - %d - %s", t_name_user, (time.Now().UnixNano()/int64(time.Millisecond)-10800000), ticks_map[t_name_user])))
 						if err != nil {
-							fmt.Println(err)
+							delete(users, u)
+							fmt.Printf("Removing %s \n", u)
 						}
 					}
 				}

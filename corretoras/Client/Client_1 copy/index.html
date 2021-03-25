@@ -28,7 +28,7 @@
           re = RegExp('- ([0-9]+) -')
           ts = Date.now() 
           _id = Math.round((ts - time_id)/5000)
-          timestamp = Number(String(msg).match(re))
+          timestamp = Number(re.exec(msg))
           array_lat_vrau.push({"id":_id,"lat":timestamp})
           console.log(msg.data)
         }
