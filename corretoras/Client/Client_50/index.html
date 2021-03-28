@@ -12,8 +12,10 @@
   <h2>Seja muito bem-vindo a GOrretora</h2>
 
   <script>
-    var time_id = Date.now()
+    var flag_id  = false
+    var time_id = 0
     var array_lat_vrau = []
+    var re_id = RegExp('^(([A-Z0-9])+ - ([0-9]+) - ([0-9\.])+)')
 
     function uuidv4() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -26,32 +28,42 @@
       let a = document.createElement('a');
       txt = 'id;latencia;tick\n'
       array_lat_vrau.forEach(function (evt) {
-        txt = txt + evt.id + ';' + evt.lat + + ';' + evt.tick + '\n'
+        txt = txt + evt.id + ';' + evt.lat +  ';' + evt.tick + '\n'
       })
       a.href = "data:application/octet-stream," + encodeURIComponent(txt);
       let myuuid = uuidv4();
 
-      a.download = myuuid + '.txt';
+      a.download = myuuid + '.csv';
       a.click();
     }
-    let socket = new WebSocket("ws://127.0.0.1:8080/ws?ticks=GOGL34&ticks=AAPL34&ticks=HAPV3&ticks=HBOR3&ticks=HBTS5&ticks=HETA4&ticks=HGTX3&ticks=HOME34&ticks=HPQB34&ticks=HYPE3&ticks=IBMB34&ticks=IDNT3&ticks=IDVL3&ticks=IDVL4&ticks=IGTA3&ticks=IRBR3&ticks=ITLC34&ticks=ITSA3&ticks=ITSA4&ticks=ITUB3&ticks=ITUB4&ticks=JBDU3&ticks=JBDU4&ticks=JBSS3&ticks=JFEN3&ticks=JHSF3&ticks=JNJB34&ticks=JPSA3&ticks=JSLG3&ticks=KEPL3&ticks=KHCB34&ticks=KLBN3&ticks=KLBN4&ticks=KLBN11&ticks=KROT3&ticks=LAME3&ticks=LAME4&ticks=LCAM3&ticks=LEVE3&ticks=LIGT3&ticks=LILY34&ticks=LINX3&ticks=LIQO3&ticks=LLIS3&ticks=LMTB34&ticks=LOGG3&ticks=LOGN3&ticks=LPSB3&ticks=LREN3&ticks=MACY34");
-    console.log("Attempting Connection...");
+
+    function validFlag() {
+      flag_id = true
+      time_id = new Date().getTime()
+    }
+
+    let socket = new WebSocket("ws://15.228.28.246:8080/ws?ticks=AALR3&ticks=AAPL34&ticks=ABBV34&ticks=ABCB4&ticks=ABEV3&ticks=ADHM3&ticks=AFLT3&ticks=AGRO3&ticks=ALPA3&ticks=ALPA4&ticks=ALSC3&ticks=ALUP3&ticks=ALUP4&ticks=ALUP11&ticks=AMAR3&ticks=AMGN34&ticks=AMZO34&ticks=ANIM3&ticks=APER3&ticks=ARZZ3&ticks=ATOM3&ticks=ATTB34&ticks=AZEV4&ticks=AZUL4&ticks=B3SA3&ticks=BAHI3&ticks=BAUH4&ticks=BAZA3&ticks=BBAS3&ticks=BBDC3&ticks=BBDC4&ticks=BBRK3&ticks=BBSE3&ticks=BEEF3&ticks=BEES3&ticks=BEES4&ticks=BERK34&ticks=BGIP4&ticks=BIDI4&ticks=BIIB34&ticks=BIOM3&ticks=BKBR3&ticks=BMEB4&ticks=BNBR3&ticks=BOAC34&ticks=BOBR4&ticks=BOEI34&ticks=BOXP34&ticks=BPAC3&ticks=GOGL34")
+    console.log("Attempting Connection...")
     console.log(socket)
 
     socket.onopen = () => {
       console.log("Successfully Connected");
       socket.send("Hi From the Client!")
-      time_id = Date.now()
     };
 
     socket.onmessage = (msg) => {
+      if ((((msg.data).toString()).match(re_id)) != null && flag_id == false){
+        validFlag()
+      }
       re = RegExp('- ([0-9]+) -')
       re_2 = RegExp('^([A-Z0-9]+) -')
-      ts = Date.now()
-      _id = Math.round((ts - time_id) / 5000)
-      timestamp = Number(((msg.data).toString()).match(re)[1])
-      array_lat_vrau.push({ "id": _id, "lat": (Date.now() - 10800000) - timestamp, "tick": ((msg.data).toString()).match(re_2)[1] })
+      ts = new Date().getTime()
+      _id = Math.round((ts - time_id) / 1000)
+      timestamp = Number(((msg.data).toString()).match(re)[1]) 
+      lat = (new Date().getTime() - 10800000) - timestamp
+      array_lat_vrau.push({ "id": _id, "lat": lat > 0 ? lat : lat * -1, "tick": ((msg.data).toString()).match(re_2)[1] })
       console.log(msg.data)
+
     }
 
     socket.onclose = event => {
@@ -64,6 +76,7 @@
     socket.onerror = error => {
       console.log("Socket Error: ", error);
     };
+
   </script>
 </body>
 

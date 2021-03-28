@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Gorretora</title>
+</head>
+
+<body>
+  <h2>Seja muito bem-vindo a GOrretora</h2>
+
+  <script>
+    var flag_id  = false
+    var time_id = 0
+    var array_lat_vrau = []
+    var re_id = RegExp('^(([A-Z0-9])+ - ([0-9]+) - ([0-9\.])+)')
+
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function writeFile() {
+      let a = document.createElement('a');
+      txt = 'id;latencia;tick\n'
+      array_lat_vrau.forEach(function (evt) {
+        txt = txt + evt.id + ';' + evt.lat +  ';' + evt.tick + '\n'
+      })
+      a.href = "data:application/octet-stream," + encodeURIComponent(txt);
+      let myuuid = uuidv4();
+
+      a.download = myuuid + '.csv';
+      a.click();
+    }
+
+    function validFlag() {
+      flag_id = true
+      time_id = new Date().getTime()
+    }
+
+    let socket = new WebSocket("ws://15.228.28.246:8080/ws?ticks=AALR3&ticks=AAPL34&ticks=ABBV34&ticks=ABCB4&ticks=ABEV3&ticks=ADHM3&ticks=AFLT3&ticks=AGRO3&ticks=ALPA3&ticks=ALPA4&ticks=ALSC3&ticks=ALUP3&ticks=ALUP4&ticks=ALUP11&ticks=AMAR3&ticks=AMGN34&ticks=AMZO34&ticks=ANIM3&ticks=APER3&ticks=ARZZ3&ticks=ATOM3&ticks=ATTB34&ticks=AZEV4&ticks=AZUL4&ticks=B3SA3&ticks=BAHI3&ticks=BAUH4&ticks=BAZA3&ticks=BBAS3&ticks=BBDC3&ticks=BBDC4&ticks=BBRK3&ticks=BBSE3&ticks=BEEF3&ticks=BEES3&ticks=BEES4&ticks=BERK34&ticks=BGIP4&ticks=BIDI4&ticks=BIIB34&ticks=BIOM3&ticks=BKBR3&ticks=BMEB4&ticks=BNBR3&ticks=BOAC34&ticks=BOBR4&ticks=BOEI34&ticks=BOXP34&ticks=BPAC3&ticks=BPAC5&ticks=BPAC11&ticks=BPAN4&ticks=BRAP3&ticks=BRAP4&ticks=BRDT3&ticks=BRFS3&ticks=BRIV4&ticks=BRKM3&ticks=BRKM5&ticks=BRML3&ticks=BRPR3&ticks=BRSR3&ticks=BRSR6&ticks=BSEV3&ticks=BTOW3&ticks=BTTL3&ticks=CAMB4&ticks=CAML3&ticks=CARD3&ticks=CBEE3&ticks=CCPR3&ticks=CCRO3&ticks=CCXC3&ticks=CEDO4&ticks=CEEB3&ticks=CELP3&ticks=CELP5&ticks=CELP7&ticks=CESP3&ticks=CESP5&ticks=CESP6&ticks=CGAS3&ticks=CGAS5&ticks=CGRA3&ticks=CGRA4&ticks=CHVX34&ticks=CIEL3&ticks=CLGN34&ticks=CLSC4&ticks=CMCS34&ticks=CMIG3&ticks=CMIG4&ticks=COCA34&ticks=COCE3&ticks=COCE5&ticks=COLG34&ticks=COPH34&ticks=COWC34&ticks=CPFE3&ticks=CPLE3&ticks=CPLE6&ticks=CPRE3&ticks=CRDE3&ticks=CRFB3&ticks=CRIV3&ticks=CRPG5&ticks=CRPG6&ticks=CSAN3&ticks=CSMG3&ticks=CSNA3&ticks=CSRN3&ticks=CSRN5&ticks=CTGP34&ticks=CTKA4&ticks=CTNM3&ticks=CTNM4&ticks=CTSA3&ticks=CTSA4&ticks=CTSH34&ticks=CVCB3&ticks=CVSH34&ticks=CYRE3&ticks=DEAI34&ticks=DIRR3&ticks=DISB34&ticks=DMMO3&ticks=DTEX3&ticks=EALT4&ticks=ECOR3&ticks=EGIE3&ticks=EKTR4&ticks=ELEK4&ticks=ELET3&ticks=ELET5&ticks=ELET6&ticks=ELPL3&ticks=EMAE4&ticks=EMBR3&ticks=ENBR3&ticks=ENEV3&ticks=ENGI3&ticks=ENGI4&ticks=ENGI11&ticks=ENMA3B&ticks=ENMT3&ticks=EQTL3&ticks=ESTC3&ticks=EUCA4&ticks=EVEN3&ticks=EXXO34&ticks=EZTC3&ticks=FBOK34&ticks=FESA3&ticks=FESA4&ticks=FHER3&ticks=FIBR3&ticks=FJTA3&ticks=FJTA4&ticks=FLRY3&ticks=FRAS3&ticks=GBIO33&ticks=GFSA3&ticks=GGBR3&ticks=GGBR4&ticks=GILD34&ticks=GNDI3&ticks=GOAU3&ticks=GOAU4&ticks=GOGL34&ticks=GOGL35&ticks=GOLL4&ticks=GPIV33&ticks=GPSI34&ticks=GRND3&ticks=GSGI34&ticks=GSHP3&ticks=GUAR3&ticks=GUAR4&ticks=HAGA4&ticks=HAPV3&ticks=HBOR3&ticks=HBTS5&ticks=HETA4&ticks=HGTX3&ticks=HOME34&ticks=HPQB34&ticks=HYPE3&ticks=IBMB34&ticks=IDNT3&ticks=IDVL3&ticks=IDVL4&ticks=IGTA3&ticks=IRBR3&ticks=ITLC34&ticks=ITSA3&ticks=ITSA4&ticks=ITUB3&ticks=ITUB4&ticks=JBDU3&ticks=JBDU4")
+    console.log("Attempting Connection...")
+    console.log(socket)
+
+    socket.onopen = () => {
+      console.log("Successfully Connected");
+      socket.send("Hi From the Client!")
+    };
+
+    socket.onmessage = (msg) => {
+      if ((((msg.data).toString()).match(re_id)) != null && flag_id == false){
+        validFlag()
+      }
+      re = RegExp('- ([0-9]+) -')
+      re_2 = RegExp('^([A-Z0-9]+) -')
+      ts = new Date().getTime()
+      _id = Math.round((ts - time_id) / 1000)
+      timestamp = Number(((msg.data).toString()).match(re)[1]) 
+      lat = (new Date().getTime() - 10800000) - timestamp
+      array_lat_vrau.push({ "id": _id, "lat": lat > 0 ? lat : lat * -1, "tick": ((msg.data).toString()).match(re_2)[1] })
+      console.log(msg.data)
+    }
+
+    socket.onclose = event => {
+      console.log("Socket Closed Connection: ", event);
+      socket.send("Client Closed!")
+      writeFile()
+
+    };
+
+    socket.onerror = error => {
+      console.log("Socket Error: ", error);
+    };
+
+  </script>
+</body>
+
+</html>
