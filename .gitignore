@@ -17,8 +17,6 @@ ipython_config.py
 
 **/data/*
 **/zk-single-kafka-single/*
-**/dayone.csv
-**/COTAHIST_A2019_PROCESSED.csv
 **/*.txt
 
 # Remove previous ipynb_checkpoints
